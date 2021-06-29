@@ -40,7 +40,7 @@ class _SignInScreenState extends State<SignInScreen> {
         _passwordFocusNode.unfocus();
       },
       child: Scaffold(
-        backgroundColor: CustomColors.firebaseNavy,
+        backgroundColor: CustomColors.buttonColor,
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.only(
@@ -60,14 +60,14 @@ class _SignInScreenState extends State<SignInScreen> {
                       Text(
                         'WELCOME',
                         style: TextStyle(
-                            color: CustomColors.firebaseYellow,
+                            color: CustomColors.custumText,
                             fontSize: 40,
                             fontWeight: FontWeight.normal),
                       ),
                       Text(
                         'Track Down Your Activities',
                         style: TextStyle(
-                          color: CustomColors.firebaseOrange,
+                          color: CustomColors.custumText,
                           fontSize: 20,
                         ),
                       ),

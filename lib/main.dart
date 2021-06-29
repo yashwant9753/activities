@@ -3,8 +3,10 @@ import 'package:login/screens/sign_in_screen.dart';
 import 'package:flutter/services.dart';
 import 'package:login/res/custom_colors.dart';
 import 'package:flutter/foundation.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+Future<void> main() async {
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -17,9 +19,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Activity App',
       debugShowCheckedModeBanner: false,
-      theme: defaultTargetPlatform == TargetPlatform.iOS
-          ? kIOSTheme
-          : kDefaultTheme,
+      theme: ThemeData(
+        primarySwatch: Colors.indigo,
+        brightness: Brightness.dark,
+      ),
       home: SignInScreen(),
     );
   }

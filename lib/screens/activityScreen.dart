@@ -95,7 +95,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: CustomColors.firebaseNavy,
+      backgroundColor: CustomColors.buttonColor,
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
@@ -267,18 +267,18 @@ class _ActivityScreenState extends State<ActivityScreen> {
                     ),
             ),
             const Divider(height: 2),
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 8.0),
-              decoration: BoxDecoration(
-                color: const Color(0xff7c94b6),
-                border: Border.all(
-                  color: Colors.white,
-                  width: 2,
-                ),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: _buildTextComposer(),
-            ),
+            // Container(
+            //   margin: const EdgeInsets.symmetric(horizontal: 8.0),
+            //   decoration: BoxDecoration(
+            //     color: const Color(0xff7c94b6),
+            //     border: Border.all(
+            //       color: Colors.white,
+            //       width: 2,
+            //     ),
+            //     borderRadius: BorderRadius.circular(12),
+            //   ),
+            //   child:
+            _buildTextComposer(),
           ],
         ),
       ),
@@ -417,7 +417,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
       //                           style: TextStyle(
       //                             fontSize: 20,
       //                             fontWeight: FontWeight.bold,
-      //                             color: CustomColors.firebaseNavy,
+      //                             color: CustomColors.buttonColor,
       //                             letterSpacing: 2,
       //                           ),
       //                         ),
@@ -448,46 +448,53 @@ class _ActivityScreenState extends State<ActivityScreen> {
   }
 
   Widget _buildTextComposer() {
-    return IconTheme(
-      data: IconThemeData(color: Theme.of(context).accentColor),
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 5.0),
-        child: Row(
-          children: [
-            Flexible(
-              child: TextField(
-                controller: _textController,
-                onChanged: (text) {
-                  setState(() {
-                    _isComposing = text.isNotEmpty;
-                  });
-                },
-                onSubmitted: _isComposing ? _handleSubmitted : null,
-                decoration:
-                    const InputDecoration.collapsed(hintText: 'Type Activity'),
-                focusNode: _focusNode,
-              ),
-            ),
-            Container(
-                margin: const EdgeInsets.symmetric(horizontal: 0),
-                child: Theme.of(context).platform == TargetPlatform.iOS
-                    ? CupertinoButton(
-                        onPressed: _isComposing
-                            ? () => _handleSubmitted(_textController.text)
-                            : null,
-                        child: const Text('Send'),
-                      )
-                    : IconButton(
-                        icon: const Icon(
-                          Icons.add_circle_rounded,
-                        ),
-                        onPressed: _isComposing
-                            ? () => _handleSubmitted(_textController.text)
-                            : null,
-                      ))
-          ],
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 5.0),
+      decoration: BoxDecoration(
+        color: const Color(0xff7c94b6),
+        border: Border.all(
+          color: Colors.white,
+          width: 2,
         ),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        children: [
+          Flexible(
+            child: TextField(
+              controller: _textController,
+              onChanged: (text) {
+                setState(() {
+                  _isComposing = text.isNotEmpty;
+                });
+              },
+              onSubmitted: _isComposing ? _handleSubmitted : null,
+              decoration:
+                  const InputDecoration.collapsed(hintText: 'Type Activity'),
+              focusNode: _focusNode,
+            ),
+          ),
+          Container(
+              color: Colors.red,
+              margin: const EdgeInsets.symmetric(horizontal: 0),
+              child: Theme.of(context).platform == TargetPlatform.iOS
+                  ? CupertinoButton(
+                      onPressed: _isComposing
+                          ? () => _handleSubmitted(_textController.text)
+                          : null,
+                      child: const Text('Send'),
+                    )
+                  : IconButton(
+                      icon: const Icon(
+                        Icons.add_circle_rounded,
+                      ),
+                      onPressed: _isComposing
+                          ? () => _handleSubmitted(_textController.text)
+                          : null,
+                    ))
+        ],
       ),
     );
+    // );
   }
 }
