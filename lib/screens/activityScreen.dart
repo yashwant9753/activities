@@ -4,8 +4,10 @@ import 'package:login/res/custom_colors.dart';
 import 'package:login/screens/sign_in_screen.dart';
 import 'package:login/utils/authentication.dart';
 import 'package:login/widgets/app_bar_title.dart';
+import 'package:login/database/database.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 String _name = 'Description';
 
@@ -215,6 +217,10 @@ class _ActivityScreenState extends State<ActivityScreen> {
             ),
             tooltip: 'Save Activity',
             onPressed: () {
+              // writeData(_messages);
+              // readData();
+              // updateData(_messages);
+              addItem();
               ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Saved Successfully')));
             },
@@ -282,201 +288,41 @@ class _ActivityScreenState extends State<ActivityScreen> {
           ],
         ),
       ),
-      // body: Container(
-      //   child: Padding(
-      //     padding: const EdgeInsets.only(
-      //       left: 16.0,
-      //       right: 16.0,
-      //       bottom: 20.0,
-      //     ),
-      //     child: Column(
-      //       mainAxisAlignment: MainAxisAlignment.center,
-      //       children: [
-      //         Row(),
-      //         ClipOval(
-      //           child: Material(
-      //             color: CustomColors.firebaseGrey.withOpacity(0.3),
-      //             child: Padding(
-      //               padding: const EdgeInsets.all(8.0),
-      //               child: Icon(
-      //                 Icons.person,
-      //                 size: 42,
-      //                 color: CustomColors.firebaseGrey,
-      //               ),
-      //             ),
-      //           ),
-      //         ),
-      //         SizedBox(height: 16.0),
-      //         Text(
-      //           'Hello',
-      //           style: TextStyle(
-      //             color: CustomColors.firebaseGrey,
-      //             fontSize: 26,
-      //           ),
-      //         ),
-      //         SizedBox(height: 8.0),
-      //         Text(
-      //           widget._user.displayName!,
-      //           style: TextStyle(
-      //             color: CustomColors.firebaseYellow,
-      //             fontSize: 26,
-      //           ),
-      //         ),
-      //         SizedBox(height: 24.0),
-      //         _isEmailVerified
-      //             ? Row(
-      //                 mainAxisSize: MainAxisSize.min,
-      //                 children: [
-      //                   ClipOval(
-      //                     child: Material(
-      //                       color: Colors.greenAccent.withOpacity(0.6),
-      //                       child: Padding(
-      //                         padding: const EdgeInsets.all(4.0),
-      //                         child: Icon(
-      //                           Icons.check,
-      //                           size: 20,
-      //                           color: Colors.white,
-      //                         ),
-      //                       ),
-      //                     ),
-      //                   ),
-      //                   SizedBox(width: 8.0),
-      //                   Text(
-      //                     'Email is verified',
-      //                     style: TextStyle(
-      //                       color: Colors.greenAccent,
-      //                       fontSize: 20,
-      //                       letterSpacing: 0.5,
-      //                     ),
-      //                   ),
-      //                 ],
-      //               )
-      //             : Row(
-      //                 mainAxisSize: MainAxisSize.min,
-      //                 children: [
-      //                   ClipOval(
-      //                     child: Material(
-      //                       color: Colors.redAccent.withOpacity(0.8),
-      //                       child: Padding(
-      //                         padding: const EdgeInsets.all(4.0),
-      //                         child: Icon(
-      //                           Icons.close,
-      //                           size: 20,
-      //                           color: Colors.white,
-      //                         ),
-      //                       ),
-      //                     ),
-      //                   ),
-      //                   SizedBox(width: 8.0),
-      //                   Text(
-      //                     'Email is not verified',
-      //                     style: TextStyle(
-      //                       color: Colors.redAccent,
-      //                       fontSize: 20,
-      //                       letterSpacing: 0.5,
-      //                     ),
-      //                   ),
-      //                 ],
-      //               ),
-      //         SizedBox(height: 8.0),
-      //         Visibility(
-      //           visible: !_isEmailVerified,
-      //           child: Row(
-      //             mainAxisSize: MainAxisSize.min,
-      //             children: [
-      //               _verificationEmailBeingSent
-      //                   ? CircularProgressIndicator(
-      //                       valueColor: AlwaysStoppedAnimation<Color>(
-      //                         CustomColors.firebaseGrey,
-      //                       ),
-      //                     )
-      //                   : ElevatedButton(
-      //                       style: ButtonStyle(
-      //                         backgroundColor: MaterialStateProperty.all(
-      //                           CustomColors.firebaseGrey,
-      //                         ),
-      //                         shape: MaterialStateProperty.all(
-      //                           RoundedRectangleBorder(
-      //                             borderRadius: BorderRadius.circular(10),
-      //                           ),
-      //                         ),
-      //                       ),
-      //                       onPressed: () async {
-      //                         setState(() {
-      //                           _verificationEmailBeingSent = true;
-      //                         });
-      //                         await _user.sendEmailVerification();
-      //                         setState(() {
-      //                           _verificationEmailBeingSent = false;
-      //                         });
-      //                       },
-      //                       child: Padding(
-      //                         padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
-      //                         child: Text(
-      //                           'Verify',
-      //                           style: TextStyle(
-      //                             fontSize: 20,
-      //                             fontWeight: FontWeight.bold,
-      //                             color: CustomColors.buttonColor,
-      //                             letterSpacing: 2,
-      //                           ),
-      //                         ),
-      //                       ),
-      //                     ),
-      //               SizedBox(width: 16.0),
-      //               IconButton(
-      //                 icon: Icon(Icons.refresh),
-      //                 onPressed: () async {
-      //                   User? user = await Authentication.refreshUser(_user);
-
-      //                   if (user != null) {
-      //                     setState(() {
-      //                       _user = user;
-      //                       _isEmailVerified = user.emailVerified;
-      //                     });
-      //                   }
-      //                 },
-      //               ),
-      //             ],
-      //           ),
-      //         ),
-      //       ],
-      //     ),
-      //   ),
-      // ),
     );
   }
 
   Widget _buildTextComposer() {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 5.0),
-      decoration: BoxDecoration(
-        color: const Color(0xff7c94b6),
-        border: Border.all(
-          color: Colors.white,
-          width: 2,
-        ),
-        borderRadius: BorderRadius.circular(12),
-      ),
       child: Row(
         children: [
           Flexible(
-            child: TextField(
-              controller: _textController,
-              onChanged: (text) {
-                setState(() {
-                  _isComposing = text.isNotEmpty;
-                });
-              },
-              onSubmitted: _isComposing ? _handleSubmitted : null,
-              decoration:
-                  const InputDecoration.collapsed(hintText: 'Type Activity'),
-              focusNode: _focusNode,
+            child: Padding(
+              padding: EdgeInsets.only(left: 20),
+              child: TextField(
+                controller: _textController,
+                onChanged: (text) {
+                  setState(() {
+                    _isComposing = text.isNotEmpty;
+                  });
+                },
+                onSubmitted: _isComposing ? _handleSubmitted : null,
+                decoration: InputDecoration.collapsed(
+                  hintText: 'Type Activity',
+                ),
+                focusNode: _focusNode,
+              ),
             ),
           ),
           Container(
-              color: Colors.red,
-              margin: const EdgeInsets.symmetric(horizontal: 0),
+              // decoration: BoxDecoration(
+              //     color: const Color(0xff7c94b6),
+              //     border: Border.all(
+              //       color: Colors.white,
+              //       width: 2,
+              //     ),
+              //     borderRadius: BorderRadius.all(Radius.circular(20))),
+              // margin: const EdgeInsets.symmetric(horizontal: 0),
               child: Theme.of(context).platform == TargetPlatform.iOS
                   ? CupertinoButton(
                       onPressed: _isComposing
@@ -487,6 +333,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
                   : IconButton(
                       icon: const Icon(
                         Icons.add_circle_rounded,
+                        size: 35,
                       ),
                       onPressed: _isComposing
                           ? () => _handleSubmitted(_textController.text)
