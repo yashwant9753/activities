@@ -5,6 +5,8 @@ import 'package:login/screens/sign_in_screen.dart';
 import 'package:login/utils/authentication.dart';
 import 'package:login/widgets/app_bar_title.dart';
 import 'package:login/database/database.dart';
+import 'package:login/screens/activitiesPage.dart';
+import 'package:login/screens/user_info_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -111,60 +113,28 @@ class _ActivityScreenState extends State<ActivityScreen> {
             ),
             ListTile(
               title: Text('All Activity'),
-              onTap: () {},
-            ),
-            ListTile(
-              title: Text('Item 2'),
               onTap: () {
-                // Update the state of the app
-
-                // ...
-                // Then close the drawer
-                print("item 2");
-                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AllActivities(
+                            user: _user,
+                          )),
+                );
               },
             ),
-            _isSigningOut
-                ? CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                      Colors.redAccent,
-                    ),
-                  )
-                : ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(
-                        Colors.redAccent,
-                      ),
-                      shape: MaterialStateProperty.all(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                    ),
-                    onPressed: () async {
-                      setState(() {
-                        _isSigningOut = true;
-                      });
-                      await FirebaseAuth.instance.signOut();
-                      setState(() {
-                        _isSigningOut = false;
-                      });
-                      Navigator.of(context)
-                          .pushReplacement(_routeToSignInScreen());
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
-                      child: Text(
-                        'Sign Out',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                          letterSpacing: 2,
-                        ),
-                      ),
-                    ),
-                  ),
+            ListTile(
+              title: Text('Profile'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => UserInfoScreen(
+                            user: _user,
+                          )),
+                );
+              },
+            ),
           ],
         ),
       ),
@@ -217,10 +187,9 @@ class _ActivityScreenState extends State<ActivityScreen> {
             ),
             tooltip: 'Save Activity',
             onPressed: () {
-              // writeData(_messages);
-              // readData();
-              // updateData(_messages);
-              addItem();
+              // addItem(_user, newDt, _messages);
+              retriveItem(_user, newDt);
+
               ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Saved Successfully')));
             },
