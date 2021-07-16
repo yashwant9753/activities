@@ -187,8 +187,8 @@ class _ActivityScreenState extends State<ActivityScreen> {
             ),
             tooltip: 'Save Activity',
             onPressed: () {
-              // addItem(_user, newDt, _messages);
-              retriveItem(_user, newDt);
+              addItem(widget._user.email, newDt, _messages);
+              // retriveItem(_user, newDt);
 
               ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Saved Successfully')));

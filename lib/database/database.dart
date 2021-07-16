@@ -1,10 +1,7 @@
 // import 'dart:html';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:login/screens/activityScreen.dart';
-import 'package:login/main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -42,10 +39,9 @@ import 'package:flutter/material.dart';
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-void addItem(User _user, var d, List _messages) {
-  CollectionReference users =
-      FirebaseFirestore.instance.collection("$_user.email");
-  users.doc("$d").set({"activity": _messages});
+void addItem(mail, var d, List _messages) {
+  CollectionReference users = FirebaseFirestore.instance.collection("${mail}");
+  users.doc('$d').set({"activity": _messages});
 }
 
 // void retriveItem(User _user) {
@@ -58,16 +54,65 @@ void addItem(User _user, var d, List _messages) {
 //           }))
 //       .catchError((error) => print("Failed to add user: $error"));
 // }
-void retriveItem(User _user, var d) {
-  FirebaseFirestore.instance
-      .collection("$_user.email")
-      .doc(d)
-      .get()
-      .then((DocumentSnapshot documentSnapshot) {
-    if (documentSnapshot.exists) {
-      print('Document data: ${documentSnapshot.data()}');
-    } else {
-      print('Document does not exist on the database');
-    }
+// List<String> retriveItem(String mail, var d) {
+//   List<String> docId = [];
+
+//   FirebaseFirestore.instance
+//       .collection("${mail}")
+//       .get()
+//       .then((QuerySnapshot querySnapshot) {
+//     querySnapshot.docs.forEach((doc) {
+//       print(docId);
+//       docId.forEach((element) => docId.add(element));
+//     });
+//   });
+
+// FirebaseFirestore.instance
+//     .collection("${mail}")
+//     .doc(d)
+//     .get()
+//     .then((DocumentSnapshot documentSnapshot) {
+//   if (documentSnapshot.exists) {
+//     print('Document data: ${documentSnapshot.data()}');
+//   } else {
+//     print('Document does not exist on the database');
+//   }
+// });
+
+//   return docId;
+// }
+getData(_mail) {
+  CollectionReference users = FirebaseFirestore.instance.collection('$_mail');
+  users.get().then((QuerySnapshot querySnapshot) {
+    List nana = [];
+    querySnapshot.docs.forEach((doc) {
+      nana.add(doc.id);
+    });
   });
+}
+// getData(_mail) {
+//   CollectionReference users = FirebaseFirestore.instance.collection('$_mail');
+//   users.snapshots().listen((snapshot) {
+//     List documents;
+//     documents = snapshot.docs;
+//     print(documents);
+//   });
+// }
+
+Future getUsersList(_mail) async {
+  CollectionReference profileList =
+      FirebaseFirestore.instance.collection('$_mail');
+  List itemsList = [];
+
+  try {
+    await profileList.get().then((querySnapshot) {
+      querySnapshot.docs.forEach((element) {
+        itemsList.add(element.id);
+      });
+    });
+    return itemsList;
+  } catch (e) {
+    print(e.toString());
+    return null;
+  }
 }
