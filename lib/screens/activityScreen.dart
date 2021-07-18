@@ -6,6 +6,7 @@ import 'package:login/utils/authentication.dart';
 import 'package:login/widgets/app_bar_title.dart';
 import 'package:login/database/database.dart';
 import 'package:login/screens/activitiesPage.dart';
+import 'package:login/screens/TestPage.dart';
 import 'package:login/screens/user_info_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
@@ -130,6 +131,18 @@ class _ActivityScreenState extends State<ActivityScreen> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => UserInfoScreen(
+                            user: _user,
+                          )),
+                );
+              },
+            ),
+            ListTile(
+              title: Text('TestPage'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => TesPage(
                             user: _user,
                           )),
                 );

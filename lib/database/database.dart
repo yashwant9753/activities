@@ -44,62 +44,7 @@ void addItem(mail, var d, List _messages) {
   users.doc('$d').set({"activity": _messages});
 }
 
-// void retriveItem(User _user) {
-//   CollectionReference users =
-//       FirebaseFirestore.instance.collection("$_user.email");
-//   users
-//       .get()
-//       .then((value) => value.docs.forEach((doc) {
-//             print(doc.id);
-//           }))
-//       .catchError((error) => print("Failed to add user: $error"));
-// }
-// List<String> retriveItem(String mail, var d) {
-//   List<String> docId = [];
-
-//   FirebaseFirestore.instance
-//       .collection("${mail}")
-//       .get()
-//       .then((QuerySnapshot querySnapshot) {
-//     querySnapshot.docs.forEach((doc) {
-//       print(docId);
-//       docId.forEach((element) => docId.add(element));
-//     });
-//   });
-
-// FirebaseFirestore.instance
-//     .collection("${mail}")
-//     .doc(d)
-//     .get()
-//     .then((DocumentSnapshot documentSnapshot) {
-//   if (documentSnapshot.exists) {
-//     print('Document data: ${documentSnapshot.data()}');
-//   } else {
-//     print('Document does not exist on the database');
-//   }
-// });
-
-//   return docId;
-// }
-getData(_mail) {
-  CollectionReference users = FirebaseFirestore.instance.collection('$_mail');
-  users.get().then((QuerySnapshot querySnapshot) {
-    List nana = [];
-    querySnapshot.docs.forEach((doc) {
-      nana.add(doc.id);
-    });
-  });
-}
-// getData(_mail) {
-//   CollectionReference users = FirebaseFirestore.instance.collection('$_mail');
-//   users.snapshots().listen((snapshot) {
-//     List documents;
-//     documents = snapshot.docs;
-//     print(documents);
-//   });
-// }
-
-Future getUsersList(_mail) async {
+Future getUserDate(_mail) async {
   CollectionReference profileList =
       FirebaseFirestore.instance.collection('$_mail');
   List itemsList = [];
@@ -111,6 +56,25 @@ Future getUsersList(_mail) async {
       });
     });
     return itemsList;
+  } catch (e) {
+    print(e.toString());
+    return null;
+  }
+}
+
+Future getUserActivity(_mail, String date) async {
+  List list = ["Yashwant Sahu"];
+  CollectionReference user = FirebaseFirestore.instance.collection('$_mail');
+
+  try {
+    user.doc(date).get().then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        print('Document data: ${documentSnapshot.data().runtimeType}');
+      } else {
+        print('Document does not exist on the database');
+      }
+    });
+    return list;
   } catch (e) {
     print(e.toString());
     return null;

@@ -32,7 +32,7 @@ class _AllActivitiesState extends State<AllActivities> {
   }
 
   fetchDatabaseList() async {
-    dynamic resultant = await getUsersList(widget._user.email);
+    dynamic resultant = await getUserDate(widget._user.email);
 
     if (resultant == null) {
       print('Unable to retrieve');
