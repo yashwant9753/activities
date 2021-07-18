@@ -26,7 +26,7 @@ class _TesPageState extends State<TesPage> {
   List activityList = [];
   void initState() {
     super.initState();
-    // fetchAcvtivity();
+    fetchAcvtivity();
     fetchDatabaseList();
   }
 
@@ -42,17 +42,17 @@ class _TesPageState extends State<TesPage> {
     }
   }
 
-  // fetchAcvtivity() async {
-  //   dynamic result = await getUserActivity(widget._user.email, newDt);
+  fetchAcvtivity() async {
+    dynamic result = await getUserActivity(widget._user.email, newDt);
 
-  //   if (result == null) {
-  //     print('Unable to retrieve');
-  //   } else {
-  //     setState(() {
-  //       activityList = result;
-  //     });
-  //   }
-  // }
+    if (result == null) {
+      print('Unable to retrieve');
+    } else {
+      setState(() {
+        activityList = result;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,9 +79,7 @@ class _TesPageState extends State<TesPage> {
                 ),
               ),
               onPressed: () {
-                // print(activityList);
-                var result = getUserActivity(widget._user.email, newDt);
-                print("${result}");
+                print(activityList);
               },
               child: Padding(
                 padding: EdgeInsets.only(top: 16.0, bottom: 16.0),

@@ -28,7 +28,7 @@ class ActivityScreen extends StatefulWidget {
 class _ActivityScreenState extends State<ActivityScreen> {
   late bool _isEmailVerified;
   late User _user;
-  final List<String> _messages = [];
+  List _messages = [];
   final _textController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
 
@@ -58,6 +58,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
 
   @override
   void initState() {
+    fetchAcvtivity();
     _user = widget._user;
     _isEmailVerified = _user.emailVerified;
 
@@ -87,6 +88,18 @@ class _ActivityScreenState extends State<ActivityScreen> {
     });
     _focusNode.requestFocus();
     // _message.animationController.forward();
+  }
+
+  fetchAcvtivity() async {
+    dynamic result = await getUserActivity(widget._user.email, newDt);
+
+    if (result == null) {
+      print('Unable to retrieve');
+    } else {
+      setState(() {
+        _messages = result;
+      });
+    }
   }
 
   @override

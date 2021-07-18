@@ -63,18 +63,21 @@ Future getUserDate(_mail) async {
 }
 
 Future getUserActivity(_mail, String date) async {
-  List list = ["Yashwant Sahu"];
   CollectionReference user = FirebaseFirestore.instance.collection('$_mail');
-
+  List itemsList = [];
+  var map;
   try {
-    user.doc(date).get().then((DocumentSnapshot documentSnapshot) {
+    await user.doc(date).get().then((DocumentSnapshot documentSnapshot) {
       if (documentSnapshot.exists) {
-        print('Document data: ${documentSnapshot.data().runtimeType}');
-      } else {
-        print('Document does not exist on the database');
+        map = documentSnapshot.data();
+        map.values.forEach((element) {
+          element.forEach((e) {
+            itemsList.add(e);
+          });
+        });
       }
     });
-    return list;
+    return itemsList;
   } catch (e) {
     print(e.toString());
     return null;
