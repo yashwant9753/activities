@@ -256,12 +256,17 @@ class _ActivityScreenState extends State<ActivityScreen> {
                           child: ListTile(
                             title: Text('${_messages[index]}'),
                             subtitle: Text(_name),
-                            trailing: Icon(Icons.delete),
-                            onTap: () {
-                              setState(() {
-                                _messages.remove(_messages[index]);
-                              });
-                            },
+                            trailing: IconButton(
+                              icon: const Icon(
+                                Icons.delete,
+                              ),
+                              tooltip: 'Delete',
+                              onPressed: () {
+                                setState(() {
+                                  _messages.remove(_messages[index]);
+                                });
+                              },
+                            ),
                           ),
                         ));
                       },

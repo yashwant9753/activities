@@ -44,6 +44,7 @@ void addItem(mail, var d, List _messages) {
   users.doc('$d').set({"activity": _messages});
 }
 
+// Fetch Document Id(Date and time) as List<dynamic>
 Future getUserDate(_mail) async {
   CollectionReference profileList =
       FirebaseFirestore.instance.collection('$_mail');
@@ -62,6 +63,7 @@ Future getUserDate(_mail) async {
   }
 }
 
+// Fetch the user Activity in ActivityScreen
 Future getUserActivity(_mail, String date) async {
   CollectionReference user = FirebaseFirestore.instance.collection('$_mail');
   List itemsList = [];

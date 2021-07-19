@@ -19,16 +19,19 @@ class AllActivities extends StatefulWidget {
 }
 
 class _AllActivitiesState extends State<AllActivities> {
-  dynamic dropdownValue = "One";
   late User _user;
 
-  final List<dynamic> _messages = ["Yashwant sahu", "Senpai"];
+  final List<String> _messages = ["Yashwant sahu", "Senpai"];
   var newDt = DateFormat.yMMMEd().format(DateTime.now());
-  List userProfilesList = [];
+  List documentIdlist = [];
+  String dropdown = 'Choice';
+
+  List activityList = [];
   void initState() {
     super.initState();
-
     fetchDatabaseList();
+
+    // fetchAcvtivity();
   }
 
   fetchDatabaseList() async {
@@ -38,7 +41,8 @@ class _AllActivitiesState extends State<AllActivities> {
       print('Unable to retrieve');
     } else {
       setState(() {
-        userProfilesList = resultant;
+        documentIdlist = resultant;
+        documentIdlist[0] = 'Choice';
       });
     }
   }
@@ -62,37 +66,31 @@ class _AllActivitiesState extends State<AllActivities> {
             : null,
         child: Column(
           children: [
-            DropdownButton<dynamic>(
-              value: dropdownValue,
-              hint: Text("Choice"),
-              icon: const Icon(Icons.arrow_drop_down_circle_outlined),
-              iconSize: 30,
-              elevation: 50,
-              isExpanded: true,
-              style: const TextStyle(color: Colors.black87),
-              onChanged: (dynamic? newValue) {
-                setState(() {
-                  dropdownValue = newValue!;
-                });
-              },
-              items: <dynamic>['One', 'Two', 'Free', 'Four']
-                  .map<DropdownMenuItem<dynamic>>((dynamic value) {
-                return DropdownMenuItem<dynamic>(
-                  value: value,
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 15),
-                    child: Text(
-                      value,
-                      style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w400,
-                          fontFamily: 'PT_Sans'),
-                    ),
-                  ),
-                );
-              }).toList(),
-            ),
+            DropdownButton(
+                icon: const Icon(Icons.arrow_drop_down_circle_outlined),
+                iconSize: 30,
+                elevation: 50,
+                isExpanded: true,
+                style: const TextStyle(color: Colors.black87),
+                value: dropdown,
+                items: documentIdlist.map((itemname) {
+                  return DropdownMenuItem(
+                      value: itemname,
+                      child: Text(
+                        itemname,
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w400,
+                            fontFamily: 'PT_Sans'),
+                      ));
+                }).toList(),
+                onChanged: (dynamic newValue) {
+                  setState(() {
+                    dropdown = newValue!;
+                    print(newValue);
+                  });
+                }),
             Flexible(
               child: _messages.isEmpty
                   ? Center(

@@ -23,11 +23,15 @@ class _TesPageState extends State<TesPage> {
   late User _user;
   var newDt = DateFormat.yMMMEd().format(DateTime.now());
   List userProfilesList = [];
+
+  String dropdown = 'Choice';
+
   List activityList = [];
   void initState() {
     super.initState();
-    fetchAcvtivity();
     fetchDatabaseList();
+
+    // fetchAcvtivity();
   }
 
   fetchDatabaseList() async {
@@ -38,21 +42,22 @@ class _TesPageState extends State<TesPage> {
     } else {
       setState(() {
         userProfilesList = resultant;
+        userProfilesList[0] = 'Choice';
       });
     }
   }
 
-  fetchAcvtivity() async {
-    dynamic result = await getUserActivity(widget._user.email, newDt);
+  // fetchAcvtivity() async {
+  //   dynamic result = await getUserActivity(widget._user.email, newDt);
 
-    if (result == null) {
-      print('Unable to retrieve');
-    } else {
-      setState(() {
-        activityList = result;
-      });
-    }
-  }
+  //   if (result == null) {
+  //     print('Unable to retrieve');
+  //   } else {
+  //     setState(() {
+  //       activityList = result;
+  //     });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -67,6 +72,31 @@ class _TesPageState extends State<TesPage> {
         child: Center(
             child: Column(
           children: <Widget>[
+            DropdownButton(
+                icon: const Icon(Icons.arrow_drop_down_circle_outlined),
+                iconSize: 30,
+                elevation: 50,
+                isExpanded: true,
+                style: const TextStyle(color: Colors.black87),
+                value: dropdown,
+                items: userProfilesList.map((itemname) {
+                  return DropdownMenuItem(
+                      value: itemname,
+                      child: Text(
+                        itemname,
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w400,
+                            fontFamily: 'PT_Sans'),
+                      ));
+                }).toList(),
+                onChanged: (dynamic newValue) {
+                  setState(() {
+                    dropdown = newValue!;
+                    print(newValue);
+                  });
+                }),
             ElevatedButton(
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(
@@ -79,7 +109,7 @@ class _TesPageState extends State<TesPage> {
                 ),
               ),
               onPressed: () {
-                print(activityList);
+                print(userProfilesList);
               },
               child: Padding(
                 padding: EdgeInsets.only(top: 16.0, bottom: 16.0),
@@ -94,7 +124,7 @@ class _TesPageState extends State<TesPage> {
                 ),
               ),
             ),
-            Text("data")
+            Text("${userProfilesList.runtimeType}")
           ],
         )),
       ),
