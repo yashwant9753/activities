@@ -21,7 +21,7 @@ class AllActivities extends StatefulWidget {
 class _AllActivitiesState extends State<AllActivities> {
   late User _user;
 
-  final List<String> _messages = ["Yashwant sahu", "Senpai"];
+  List _messages = [];
   var newDt = DateFormat.yMMMEd().format(DateTime.now());
   List documentIdlist = [];
   String dropdown = 'Choice';
@@ -43,6 +43,18 @@ class _AllActivitiesState extends State<AllActivities> {
       setState(() {
         documentIdlist = resultant;
         documentIdlist[0] = 'Choice';
+      });
+    }
+  }
+
+  fetchAcvtivity(value) async {
+    dynamic result = await getUserActivity(widget._user.email, value);
+
+    if (result == null) {
+      print('Unable to retrieve');
+    } else {
+      setState(() {
+        _messages = result;
       });
     }
   }
@@ -88,7 +100,10 @@ class _AllActivitiesState extends State<AllActivities> {
                 onChanged: (dynamic newValue) {
                   setState(() {
                     dropdown = newValue!;
-                    print(newValue);
+                    if (newValue == "Choice") {
+                    } else {
+                      fetchAcvtivity(newValue);
+                    }
                   });
                 }),
             Flexible(
