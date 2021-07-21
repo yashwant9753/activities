@@ -7,6 +7,7 @@ import 'package:login/widgets/app_bar_title.dart';
 import 'package:login/database/database.dart';
 import 'package:login/screens/activitiesPage.dart';
 import 'package:login/screens/TestPage.dart';
+import 'package:login/screens/update.dart';
 import 'package:login/screens/user_info_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
@@ -29,6 +30,8 @@ class _ActivityScreenState extends State<ActivityScreen> {
   late bool _isEmailVerified;
   late User _user;
   List _messages = [];
+  List updateList = [];
+  bool update = false;
   final _textController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
 
@@ -59,6 +62,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
   @override
   void initState() {
     fetchAcvtivity();
+    checkUpdate();
     _user = widget._user;
     _isEmailVerified = _user.emailVerified;
 
@@ -102,6 +106,19 @@ class _ActivityScreenState extends State<ActivityScreen> {
     }
   }
 
+  checkUpdate() async {
+    dynamic resultant = await updateApp();
+
+    if (resultant == null) {
+      print('Unable to retrieve');
+    } else {
+      setState(() {
+        updateList = resultant;
+        update = updateList[0]["Update"];
+      });
+    }
+  }
+
   @override
   void dispose() {
     for (var message in _messages) {
@@ -112,7 +129,21 @@ class _ActivityScreenState extends State<ActivityScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    // Update Body
+    Widget updatebody = Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "App Update",
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
+      body: Container(
+          child: Text(
+              "Update Available Please Update the App for better Experince")),
+    );
+
+    // main Activity body
+    Widget mainBody = Scaffold(
       backgroundColor: CustomColors.buttonColor,
       drawer: Drawer(
         child: ListView(
@@ -161,6 +192,15 @@ class _ActivityScreenState extends State<ActivityScreen> {
                 );
               },
             ),
+            ListTile(
+              title: Text('Update'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => UpdatePage()),
+                );
+              },
+            ),
           ],
         ),
       ),
@@ -170,15 +210,18 @@ class _ActivityScreenState extends State<ActivityScreen> {
           child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                RichText(
-                    text: TextSpan(
-                        text: 'Activity',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
-                            letterSpacing: 10,
-                            fontFamily: 'PT_Sans'))),
+                Padding(
+                  padding: EdgeInsets.only(right: 50),
+                  child: RichText(
+                      text: TextSpan(
+                          text: 'Activity',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                              letterSpacing: 5,
+                              fontFamily: 'PT_Sans'))),
+                ),
                 Padding(
                   padding: EdgeInsets.only(right: 50),
                   child: RichText(
@@ -289,6 +332,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
         ),
       ),
     );
+    return update ? updatebody : mainBody;
   }
 
   Widget _buildTextComposer() {

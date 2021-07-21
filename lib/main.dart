@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:login/screens/sign_in_screen.dart';
+import 'package:login/database/database.dart';
 import 'package:flutter/services.dart';
 import 'package:login/res/custom_colors.dart';
 
@@ -14,6 +15,7 @@ Future<void> main() async {
 
 class MyApp extends StatelessWidget {
   final Future<FirebaseApp> _fbApp = Firebase.initializeApp();
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([

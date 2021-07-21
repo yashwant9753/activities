@@ -85,3 +85,22 @@ Future getUserActivity(_mail, String date) async {
     return null;
   }
 }
+
+Future updateApp() async {
+  CollectionReference profileList =
+      FirebaseFirestore.instance.collection('Update');
+  List itemsList = [];
+
+  try {
+    await profileList.get().then((querySnapshot) {
+      querySnapshot.docs.forEach((element) {
+        itemsList.add(element.data());
+      });
+    });
+    // print(itemsList);
+    return itemsList;
+  } catch (e) {
+    print(e.toString());
+    return null;
+  }
+}

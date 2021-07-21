@@ -42,6 +42,7 @@ dependencies:
   connectivity:
   firebase_database:
   cloud_firestore: 
+  url_launcher: ^6.0.9
 
 dev_dependencies:
   flutter_test:

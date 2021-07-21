@@ -42,7 +42,7 @@ class _AllActivitiesState extends State<AllActivities> {
     } else {
       setState(() {
         documentIdlist = resultant;
-        documentIdlist[0] = 'Choice';
+        documentIdlist.add('Choice');
       });
     }
   }
@@ -111,7 +111,7 @@ class _AllActivitiesState extends State<AllActivities> {
                   ? Center(
                       child: RichText(
                           text: TextSpan(
-                              text: '''Activities''',
+                              text: "Add Some Activity",
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 20,
