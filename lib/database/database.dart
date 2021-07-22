@@ -5,43 +5,16 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-// final DatabaseReference = FirebaseDatabase.instance.reference().child('test');
-// final databaseRef = FirebaseDatabase.instance.reference();
-// void writeData(List _message) {
-//   databaseRef.child('1').set({'id': 'ID1', 'data': _message});
-// }
-
-// void readData() {
-//   databaseRef.once().then((DataSnapshot dataSnapShot) {
-//     print(dataSnapShot.value);
-//   });
-// }
-
-// void updateData(List _message) {
-//   databaseRef.child("1").update({"data": _message});
-// }
-
-// void deleteData() {
-//   databaseRef.child("1").remove();
-// }
-
-// Create a CollectionReference called users that references the firestore collection
-
-// void addItem() {
-//   CollectionReference users = FirebaseFirestore.instance.collection('users');
-//   users
-//       .get()
-//       .then((value) => value.docs.forEach((doc) {
-//             print(doc.data());
-//           }))
-//       .catchError((error) => print("Failed to add user: $error"));
-// }
-
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 
 void addItem(mail, var d, List _messages) {
   CollectionReference users = FirebaseFirestore.instance.collection("${mail}");
   users.doc('$d').set({"activity": _messages});
+}
+
+void addreview(int star, String suggestion, mail) {
+  CollectionReference users = FirebaseFirestore.instance.collection("Review");
+  users.doc('$mail').set({"Suggestion": "$suggestion", "Star": star});
 }
 
 // Fetch Document Id(Date and time) as List<dynamic>
