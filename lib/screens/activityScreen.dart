@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:login/res/custom_colors.dart';
 import 'package:login/screens/sign_in_screen.dart';
@@ -7,11 +8,12 @@ import 'package:login/widgets/app_bar_title.dart';
 import 'package:login/database/database.dart';
 import 'package:login/screens/activitiesPage.dart';
 import 'package:login/screens/TestPage.dart';
-import 'package:login/screens/update.dart';
+import 'package:login/screens/rating.dart';
 import 'package:login/screens/user_info_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 String _name = 'Description';
 
@@ -32,6 +34,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
   List _messages = [];
   List updateList = [];
   bool update = false;
+  var url;
   final _textController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
 
@@ -57,6 +60,10 @@ class _ActivityScreenState extends State<ActivityScreen> {
         );
       },
     );
+  }
+
+  launchURL() async {
+    launch(url);
   }
 
   @override
@@ -115,6 +122,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
       setState(() {
         updateList = resultant;
         update = updateList[0]["Update"];
+        url = updateList[0]["Link"];
       });
     }
   }
@@ -133,13 +141,65 @@ class _ActivityScreenState extends State<ActivityScreen> {
     Widget updatebody = Scaffold(
       appBar: AppBar(
         title: Text(
-          "App Update",
+          "Update Available",
           style: TextStyle(color: Colors.white),
         ),
       ),
       body: Container(
-          child: Text(
-              "Update Available Please Update the App for better Experince")),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: Theme.of(context).backgroundColor),
+          child: Center(
+            child: Padding(
+              padding: EdgeInsets.only(top: 200),
+              child: Column(
+                children: [
+                  Text(
+                    "The New Version of this App is Available",
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
+                  Text(
+                    "Uninstall old version and Download new Verson",
+                    style: TextStyle(
+                      fontSize: 15,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 50,
+                  ),
+                  ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                        CustomColors.firebaseOrange,
+                      ),
+                      shape: MaterialStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    ),
+                    onPressed: () {
+                      launch(url);
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 16.0, bottom: 16.0),
+                      child: Text(
+                        'Download',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: CustomColors.firebaseGrey,
+                          letterSpacing: 2,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          )),
     );
 
     // main Activity body
@@ -157,7 +217,8 @@ class _ActivityScreenState extends State<ActivityScreen> {
               ),
             ),
             ListTile(
-              title: Text('All Activity'),
+              leading: Icon(Icons.ac_unit),
+              title: Text('All Activities'),
               onTap: () {
                 Navigator.push(
                   context,
@@ -169,7 +230,8 @@ class _ActivityScreenState extends State<ActivityScreen> {
               },
             ),
             ListTile(
-              title: Text('Profile'),
+              leading: Icon(Icons.person),
+              title: Text('Account'),
               onTap: () {
                 Navigator.push(
                   context,
@@ -181,7 +243,8 @@ class _ActivityScreenState extends State<ActivityScreen> {
               },
             ),
             ListTile(
-              title: Text('TestPage'),
+              leading: Icon(Icons.rule),
+              title: Text('Test Page'),
               onTap: () {
                 Navigator.push(
                   context,
@@ -193,11 +256,12 @@ class _ActivityScreenState extends State<ActivityScreen> {
               },
             ),
             ListTile(
-              title: Text('Update'),
+              leading: Icon(Icons.rate_review),
+              title: Text('Rate this App'),
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => UpdatePage()),
+                  MaterialPageRoute(builder: (context) => RateApp(user: _user)),
                 );
               },
             ),

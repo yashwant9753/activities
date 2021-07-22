@@ -64,7 +64,7 @@ class _AllActivitiesState extends State<AllActivities> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget._user.displayName!,
+          "All Activities",
           style: TextStyle(color: Colors.white),
         ),
       ),
@@ -111,12 +111,12 @@ class _AllActivitiesState extends State<AllActivities> {
                   ? Center(
                       child: RichText(
                           text: TextSpan(
-                              text: "Add Some Activity",
+                              text: "Add Some Activity\n   or Choice Date",
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 20,
                                   fontWeight: FontWeight.w100,
-                                  letterSpacing: 10,
+                                  letterSpacing: 5,
                                   fontFamily: 'PT_Sans'))),
                     )
                   : ListView.builder(
