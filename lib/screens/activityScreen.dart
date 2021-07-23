@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:login/res/custom_colors.dart';
 import 'package:login/screens/sign_in_screen.dart';
 import 'package:login/utils/authentication.dart';
-import 'package:login/widgets/app_bar_title.dart';
 import 'package:login/database/database.dart';
 import 'package:login/screens/activitiesPage.dart';
 import 'package:login/screens/TestPage.dart';
@@ -31,6 +30,7 @@ class ActivityScreen extends StatefulWidget {
 class _ActivityScreenState extends State<ActivityScreen> {
   late bool _isEmailVerified;
   late User _user;
+  Map _messagecomp = {};
   List _messages = [];
   List updateList = [];
   bool update = false;
@@ -43,33 +43,13 @@ class _ActivityScreenState extends State<ActivityScreen> {
   var newDt = DateFormat.yMMMEd().format(DateTime.now());
   bool _isComposing = false;
 
-  Route _routeToSignInScreen() {
-    return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => SignInScreen(),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        var begin = Offset(-1.0, 0.0);
-        var end = Offset.zero;
-        var curve = Curves.ease;
-
-        var tween =
-            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-        return SlideTransition(
-          position: animation.drive(tween),
-          child: child,
-        );
-      },
-    );
-  }
-
   @override
   void initState() {
+    super.initState();
     fetchAcvtivity();
     checkUpdate();
     _user = widget._user;
     _isEmailVerified = _user.emailVerified;
-
-    super.initState();
   }
 
   void _handleClear() {
@@ -82,17 +62,11 @@ class _ActivityScreenState extends State<ActivityScreen> {
     _textController.clear();
     setState(() {
       _isComposing = false;
-    });
-    // var message = ChatMessage(
-    //   text: text,
-    //   animationController: AnimationController(
-    //     duration: const Duration(milliseconds: 700),
-    //     vsync: this,
-    //   ),
-    // );
-    setState(() {
+
       _messages.insert(0, text);
+      _messagecomp[text] = false;
     });
+
     _focusNode.requestFocus();
     // _message.animationController.forward();
   }
@@ -104,7 +78,10 @@ class _ActivityScreenState extends State<ActivityScreen> {
       print('Unable to retrieve');
     } else {
       setState(() {
-        _messages = result;
+        _messagecomp = result;
+        _messagecomp.forEach((key, value) {
+          _messages.add(key);
+        });
       });
     }
   }
@@ -115,20 +92,10 @@ class _ActivityScreenState extends State<ActivityScreen> {
     if (resultant == null) {
       print('Unable to retrieve');
     } else {
-      setState(() {
-        updateList = resultant;
-        update = updateList[0]["Update"];
-        url = updateList[0]["Link"];
-      });
+      updateList = resultant;
+      update = updateList[0]["Update"];
+      url = updateList[0]["Link"];
     }
-  }
-
-  @override
-  void dispose() {
-    for (var message in _messages) {
-      //   _message.animationController.dispose();
-    }
-    super.dispose();
   }
 
   @override
@@ -326,10 +293,19 @@ class _ActivityScreenState extends State<ActivityScreen> {
             ),
             tooltip: 'Save Activity',
             onPressed: () {
-              addItem(widget._user.email, newDt, _messages);
+              addItem(widget._user.email, newDt, _messagecomp);
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   content: Row(
-                children: [Icon(Icons.thumb_up)],
+                children: [
+                  Icon(
+                    Icons.thumb_up,
+                    color: CustomColors.firebaseOrange,
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text("Successfully Saved")
+                ],
               )));
             },
           ),
@@ -364,24 +340,38 @@ class _ActivityScreenState extends State<ActivityScreen> {
                       itemCount: _messages.length,
                       itemBuilder: (BuildContext context, int index) {
                         return Card(
+                            color: _messagecomp[_messages[index]]
+                                ? Colors.green
+                                : null,
                             child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 15),
-                          child: ListTile(
-                            title: Text('${_messages[index]}'),
-                            subtitle: Text(_name),
-                            trailing: IconButton(
-                              icon: const Icon(
-                                Icons.delete,
+                              padding: EdgeInsets.symmetric(horizontal: 15),
+                              child: ListTile(
+                                title: Text('${_messages[index]}'),
+                                subtitle: Text(_name),
+                                trailing: IconButton(
+                                  icon: const Icon(
+                                    Icons.delete,
+                                  ),
+                                  tooltip: 'Delete',
+                                  onPressed: () {
+                                    setState(() {
+                                      _messagecomp.remove(_messages[index]);
+                                      _messages.remove(_messages[index]);
+                                    });
+                                    print(_messagecomp);
+                                    print(_messages);
+                                  },
+                                ),
+                                onLongPress: () {
+                                  setState(() {
+                                    _messagecomp[_messages[index]] =
+                                        _messagecomp[_messages[index]]
+                                            ? false
+                                            : true;
+                                  });
+                                },
                               ),
-                              tooltip: 'Delete',
-                              onPressed: () {
-                                setState(() {
-                                  _messages.remove(_messages[index]);
-                                });
-                              },
-                            ),
-                          ),
-                        ));
+                            ));
                       },
                     ),
             ),

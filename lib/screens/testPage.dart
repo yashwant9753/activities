@@ -68,7 +68,25 @@ class _TesPageState extends State<TesPage> {
                         child: ListTile(
                           title: Text('${k[index]}'),
                           // title: Text('Yashwant Sahu'),
-                          subtitle: Text("Yashwant"),
+                          trailing: IconButton(
+                            icon: const Icon(
+                              Icons.delete,
+                            ),
+                            tooltip: 'Delete',
+                            onPressed: () {
+                              setState(() {
+                                testList.remove(k[index]);
+                                k.remove(k[index]);
+                              });
+                            },
+                          ),
+
+                          onLongPress: () {
+                            setState(() {
+                              testList[k[index]] =
+                                  testList[k[index]] ? false : true;
+                            });
+                          },
                         ),
                       ));
                 },

@@ -20,7 +20,7 @@ class AllActivities extends StatefulWidget {
 
 class _AllActivitiesState extends State<AllActivities> {
   late User _user;
-
+  Map _messagecomp = {};
   List _messages = [];
   var newDt = DateFormat.yMMMEd().format(DateTime.now());
   List documentIdlist = [];
@@ -54,7 +54,10 @@ class _AllActivitiesState extends State<AllActivities> {
       print('Unable to retrieve');
     } else {
       setState(() {
-        _messages = result;
+        _messagecomp = result;
+        _messagecomp.forEach((key, value) {
+          _messages.add(key);
+        });
       });
     }
   }
@@ -99,6 +102,7 @@ class _AllActivitiesState extends State<AllActivities> {
                 }).toList(),
                 onChanged: (dynamic newValue) {
                   setState(() {
+                    _messages = [];
                     dropdown = newValue!;
                     if (newValue == "Choice") {
                     } else {
@@ -124,13 +128,15 @@ class _AllActivitiesState extends State<AllActivities> {
                       itemCount: _messages.length,
                       itemBuilder: (BuildContext context, int index) {
                         return Card(
+                            color: _messagecomp[_messages[index]]
+                                ? Colors.green
+                                : null,
                             child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 15),
-                          child: ListTile(
-                            title: Text('${_messages[index]}'),
-                            subtitle: Text("Yashwant"),
-                          ),
-                        ));
+                              padding: EdgeInsets.symmetric(horizontal: 15),
+                              child: ListTile(
+                                title: Text('${_messages[index]}'),
+                              ),
+                            ));
                       },
                     ),
             ),

@@ -7,9 +7,9 @@ import 'package:flutter/material.dart';
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-void addItem(mail, var d, List _messages) {
+void addItem(mail, var d, var _messagecomp) {
   CollectionReference users = FirebaseFirestore.instance.collection("${mail}");
-  users.doc('$d').set({"activity": _messages});
+  users.doc('$d').set({"Activities": _messagecomp});
 }
 
 void addreview(int star, String suggestion, mail) {
@@ -41,23 +41,41 @@ Future getUserActivity(_mail, String date) async {
   CollectionReference user = FirebaseFirestore.instance.collection('$_mail');
   List itemsList = [];
   var map;
+  var map2;
   try {
     await user.doc(date).get().then((DocumentSnapshot documentSnapshot) {
       if (documentSnapshot.exists) {
         map = documentSnapshot.data();
-        map.values.forEach((element) {
-          element.forEach((e) {
-            itemsList.add(e);
-          });
-        });
+        map2 = map["Activities"];
       }
     });
-    return itemsList;
+    return map2;
   } catch (e) {
     print(e.toString());
     return null;
   }
 }
+// Future getUserActivity(_mail, String date) async {
+//   CollectionReference user = FirebaseFirestore.instance.collection('$_mail');
+//   List itemsList = [];
+//   var map;
+//   try {
+//     await user.doc(date).get().then((DocumentSnapshot documentSnapshot) {
+//       if (documentSnapshot.exists) {
+//         map = documentSnapshot.data();
+//         map.values.forEach((element) {
+//           element.forEach((e) {
+//             itemsList.add(e);
+//           });
+//         });
+//       }
+//     });
+//     return itemsList;
+//   } catch (e) {
+//     print(e.toString());
+//     return null;
+//   }
+// }
 
 Future updateApp() async {
   CollectionReference profileList =
