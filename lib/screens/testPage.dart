@@ -25,18 +25,22 @@ class TesPage extends StatefulWidget {
 class _TesPageState extends State<TesPage> {
   late User _user;
   Map data = {};
+  // List testList = ["Yashwant", "Sahu"];
+  Map testList = {"name": true, "Sem": false, "nana": true};
+  List k = [];
   var newDt = DateFormat.yMMMEd().format(DateTime.now());
   List userProfilesList = [];
 
-  _launchURL() async {
-    const url =
-        'https://flutterforyou.com/how-to-open-url-in-external-browser-in-flutter/';
-
-    launch(url);
-  }
-
   void initState() {
     super.initState();
+    fetchkey();
+  }
+
+  fetchkey() {
+    testList.forEach((key, value) {
+      k.add(key);
+    });
+    print(k);
   }
 
   @override
@@ -52,6 +56,24 @@ class _TesPageState extends State<TesPage> {
         child: Center(
             child: Column(
           children: <Widget>[
+            Flexible(
+              child: ListView.builder(
+                padding: const EdgeInsets.all(8.0),
+                itemCount: k.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Card(
+                      color: testList[k[index]] ? Colors.green : null,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 15),
+                        child: ListTile(
+                          title: Text('${k[index]}'),
+                          // title: Text('Yashwant Sahu'),
+                          subtitle: Text("Yashwant"),
+                        ),
+                      ));
+                },
+              ),
+            ),
             ElevatedButton(
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(
@@ -64,11 +86,7 @@ class _TesPageState extends State<TesPage> {
                 ),
               ),
               onPressed: () {
-                if (userProfilesList[0]["Update"] == false) {
-                  print("O ya");
-                } else {
-                  print("o no no ");
-                }
+                print(testList[k[0]]);
               },
               child: Padding(
                 padding: EdgeInsets.only(top: 16.0, bottom: 16.0),

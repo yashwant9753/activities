@@ -111,7 +111,7 @@ class _AllActivitiesState extends State<AllActivities> {
                   ? Center(
                       child: RichText(
                           text: TextSpan(
-                              text: "Add Some Activity\n   or Choice Date",
+                              text: "Saved Activities",
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 20,

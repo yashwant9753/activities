@@ -62,10 +62,6 @@ class _ActivityScreenState extends State<ActivityScreen> {
     );
   }
 
-  launchURL() async {
-    launch(url);
-  }
-
   @override
   void initState() {
     fetchAcvtivity();
@@ -265,6 +261,16 @@ class _ActivityScreenState extends State<ActivityScreen> {
                 );
               },
             ),
+            ListTile(
+              leading: Icon(Icons.rate_review),
+              title: Text('Test'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => TesPage(user: _user)),
+                );
+              },
+            ),
           ],
         ),
       ),
@@ -315,16 +321,16 @@ class _ActivityScreenState extends State<ActivityScreen> {
           IconButton(
             padding: EdgeInsets.only(right: 30),
             icon: const Icon(
-              Icons.save_alt,
+              Icons.save,
               size: 30,
             ),
             tooltip: 'Save Activity',
             onPressed: () {
               addItem(widget._user.email, newDt, _messages);
-              // retriveItem(_user, newDt);
-
-              ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Saved Successfully')));
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Row(
+                children: [Icon(Icons.thumb_up)],
+              )));
             },
           ),
         ],
