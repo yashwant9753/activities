@@ -35,9 +35,6 @@ class _RateAppState extends State<RateApp> {
       }
     });
     addreview(star, _suggestion.text, widget._user.email!);
-    print(_suggestion.text);
-    print(reviewList);
-    print(star);
 
     star = 0;
     reviewList.clear();

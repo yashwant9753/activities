@@ -13,6 +13,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:connectivity/connectivity.dart';
 
 String _name = 'Description';
 
@@ -42,14 +43,27 @@ class _ActivityScreenState extends State<ActivityScreen> {
   bool _isSigningOut = false;
   var newDt = DateFormat.yMMMEd().format(DateTime.now());
   bool _isComposing = false;
+  bool checknetConnection = false;
 
   @override
   void initState() {
     super.initState();
+    checkConnectivity();
     fetchAcvtivity();
     checkUpdate();
     _user = widget._user;
     _isEmailVerified = _user.emailVerified;
+  }
+
+  checkConnectivity() async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.mobile) {
+      checknetConnection = true;
+    } else if (connectivityResult == ConnectivityResult.wifi) {
+      checknetConnection = true;
+    } else {
+      checknetConnection = false;
+    }
   }
 
   void _handleClear() {
@@ -129,6 +143,12 @@ class _ActivityScreenState extends State<ActivityScreen> {
                       fontSize: 15,
                     ),
                   ),
+                  Text(
+                    "Your Data will be Saved after Uninstall",
+                    style: TextStyle(
+                      fontSize: 15,
+                    ),
+                  ),
                   SizedBox(
                     height: 50,
                   ),
@@ -165,234 +185,302 @@ class _ActivityScreenState extends State<ActivityScreen> {
           )),
     );
 
-    // main Activity body
-    Widget mainBody = Scaffold(
-      backgroundColor: CustomColors.buttonColor,
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            DrawerHeader(
-              decoration: BoxDecoration(color: Theme.of(context).primaryColor),
-              child: Text(
-                widget._user.displayName!,
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-            ListTile(
-              leading: Icon(Icons.ac_unit),
-              title: Text('All Activities'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => AllActivities(
-                            user: _user,
-                          )),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.person),
-              title: Text('Account'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => UserInfoScreen(
-                            user: _user,
-                          )),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.rule),
-              title: Text('Test Page'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => TesPage(
-                            user: _user,
-                          )),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.rate_review),
-              title: Text('Rate this App'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => RateApp(user: _user)),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.rate_review),
-              title: Text('Test'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => TesPage(user: _user)),
-                );
-              },
-            ),
-          ],
-        ),
-      ),
+    Widget noInternet = Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).primaryColor,
-        title: Container(
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(right: 50),
-                  child: RichText(
-                      text: TextSpan(
-                          text: 'Activity',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: 5,
-                              fontFamily: 'PT_Sans'))),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(right: 50),
-                  child: RichText(
-                      text: TextSpan(
-                          text: "- ${newDt}",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 10,
-                            fontWeight: FontWeight.w700,
-                            fontFamily: 'PT_Sans',
-                          ))),
-                ),
-              ]),
+        title: Text(
+          "No Internet",
+          style: TextStyle(color: Colors.white),
         ),
-        elevation: Theme.of(context).platform == TargetPlatform.iOS ? 0.0 : 4.0,
-        actions: <Widget>[
-          IconButton(
-            padding: EdgeInsets.only(right: 20),
-            icon: const Icon(Icons.clear_all, size: 30),
-            tooltip: 'Clear all Activity',
-            onPressed: () {
-              setState(() {
-                _messages.clear();
-              });
-            },
-          ),
-          IconButton(
-            padding: EdgeInsets.only(right: 30),
-            icon: const Icon(
-              Icons.save,
-              size: 30,
-            ),
-            tooltip: 'Save Activity',
-            onPressed: () {
-              addItem(widget._user.email, newDt, _messagecomp);
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Row(
-                children: [
-                  Icon(
-                    Icons.thumb_up,
-                    color: CustomColors.firebaseOrange,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text("Successfully Saved")
-                ],
-              )));
-            },
-          ),
-        ],
       ),
       body: Container(
-        decoration: Theme.of(context).platform == TargetPlatform.iOS //new
-            ? BoxDecoration(
-                border: Border(
-                  top: BorderSide(color: Colors.grey[200]!),
-                ),
-              )
-            : null,
-        child: Column(
-          children: [
-            Flexible(
-              child: _messages.isEmpty
-                  ? Center(
-                      child: RichText(
-                          text: TextSpan(
-                              text: '''Today's Activities''',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w100,
-                                  letterSpacing: 10,
-                                  fontFamily: 'PT_Sans'))),
-                    )
-                  : ListView.builder(
-                      padding: const EdgeInsets.all(8.0),
-                      reverse: true,
-                      itemCount: _messages.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Card(
-                            color: _messagecomp[_messages[index]]
-                                ? Colors.green
-                                : null,
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 15),
-                              child: ListTile(
-                                title: Text('${_messages[index]}'),
-                                subtitle: Text(_name),
-                                trailing: IconButton(
-                                  icon: const Icon(
-                                    Icons.delete,
-                                  ),
-                                  tooltip: 'Delete',
-                                  onPressed: () {
-                                    setState(() {
-                                      _messagecomp.remove(_messages[index]);
-                                      _messages.remove(_messages[index]);
-                                    });
-                                    print(_messagecomp);
-                                    print(_messages);
-                                  },
-                                ),
-                                onLongPress: () {
-                                  setState(() {
-                                    _messagecomp[_messages[index]] =
-                                        _messagecomp[_messages[index]]
-                                            ? false
-                                            : true;
-                                  });
-                                },
-                              ),
-                            ));
-                      },
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: Theme.of(context).backgroundColor),
+          child: Center(
+            child: Padding(
+              padding: EdgeInsets.only(top: 200),
+              child: Column(
+                children: [
+                  Icon(
+                    Icons.network_check,
+                    size: 100,
+                  ),
+                  Text(
+                    "Not Internet Connection",
+                    style: TextStyle(
+                      fontSize: 20,
                     ),
+                  ),
+                  Text(
+                    "This App Store User Activity in Cloud",
+                    style: TextStyle(
+                      fontSize: 15,
+                    ),
+                  ),
+                  Text(
+                    "So Please Connect Your Internet",
+                    style: TextStyle(
+                      fontSize: 15,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 50,
+                  ),
+                  ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                        CustomColors.firebaseOrange,
+                      ),
+                      shape: MaterialStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        checkConnectivity();
+                      });
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 16.0, bottom: 16.0),
+                      child: Text(
+                        'Retry',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: CustomColors.firebaseGrey,
+                          letterSpacing: 2,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-            const Divider(height: 2),
-            // Container(
-            //   margin: const EdgeInsets.symmetric(horizontal: 8.0),
-            //   decoration: BoxDecoration(
-            //     color: const Color(0xff7c94b6),
-            //     border: Border.all(
-            //       color: Colors.white,
-            //       width: 2,
-            //     ),
-            //     borderRadius: BorderRadius.circular(12),
-            //   ),
-            //   child:
-            _buildTextComposer(),
+          )),
+    );
+
+    // main Activity body
+    Widget mainBody = Scaffold(
+        backgroundColor: CustomColors.buttonColor,
+        drawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              DrawerHeader(
+                decoration:
+                    BoxDecoration(color: Theme.of(context).primaryColor),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.person,
+                      size: 50,
+                      color: CustomColors.firebaseGrey,
+                    ),
+                    SizedBox(
+                      width: 25,
+                    ),
+                    Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            widget._user.displayName!,
+                            style: TextStyle(color: Colors.white, fontSize: 20),
+                          ),
+                          Text(
+                            widget._user.email!,
+                            style: TextStyle(color: Colors.white, fontSize: 10),
+                          ),
+                        ]),
+                  ],
+                ),
+              ),
+              ListTile(
+                leading: Icon(Icons.ac_unit),
+                title: Text('All Activities'),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AllActivities(
+                              user: _user,
+                            )),
+                  );
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.person),
+                title: Text('Account'),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => UserInfoScreen(
+                              user: _user,
+                            )),
+                  );
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.rate_review),
+                title: Text('Rate this App'),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => RateApp(user: _user)),
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).primaryColor,
+          title: Container(
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(right: 50),
+                    child: RichText(
+                        text: TextSpan(
+                            text: 'Activity',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+                                letterSpacing: 5,
+                                fontFamily: 'PT_Sans'))),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(right: 50),
+                    child: RichText(
+                        text: TextSpan(
+                            text: "- ${newDt}",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 10,
+                              fontWeight: FontWeight.w700,
+                              fontFamily: 'PT_Sans',
+                            ))),
+                  ),
+                ]),
+          ),
+          elevation:
+              Theme.of(context).platform == TargetPlatform.iOS ? 0.0 : 4.0,
+          actions: <Widget>[
+            IconButton(
+              padding: EdgeInsets.only(right: 20),
+              icon: const Icon(Icons.clear_all, size: 30),
+              tooltip: 'Clear all Activity',
+              onPressed: () {
+                setState(() {
+                  _messages.clear();
+                });
+              },
+            ),
+            IconButton(
+              padding: EdgeInsets.only(right: 30),
+              icon: const Icon(
+                Icons.save,
+                size: 30,
+              ),
+              tooltip: 'Save Activity',
+              onPressed: () {
+                addItem(widget._user.email, newDt, _messagecomp);
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Row(
+                  children: [
+                    Icon(
+                      Icons.thumb_up,
+                      color: CustomColors.firebaseOrange,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text("Successfully Saved")
+                  ],
+                )));
+              },
+            ),
           ],
         ),
-      ),
-    );
-    return update ? updatebody : mainBody;
+        body: Container(
+          decoration: Theme.of(context).platform == TargetPlatform.iOS //new
+              ? BoxDecoration(
+                  border: Border(
+                    top: BorderSide(color: Colors.grey[200]!),
+                  ),
+                )
+              : null,
+          child: Column(
+            children: [
+              Flexible(
+                child: _messages.isEmpty
+                    ? Center(
+                        child: RichText(
+                            text: TextSpan(
+                                text: '''Today's Activities''',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w100,
+                                    letterSpacing: 10,
+                                    fontFamily: 'PT_Sans'))),
+                      )
+                    : ListView.builder(
+                        padding: const EdgeInsets.all(8.0),
+                        reverse: true,
+                        itemCount: _messages.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Card(
+                              color: _messagecomp[_messages[index]]
+                                  ? Colors.green
+                                  : null,
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 15),
+                                child: ListTile(
+                                  title: Text('${_messages[index]}'),
+                                  trailing: IconButton(
+                                    icon: const Icon(
+                                      Icons.delete,
+                                    ),
+                                    tooltip: 'Delete',
+                                    onPressed: () {
+                                      setState(() {
+                                        _messagecomp.remove(_messages[index]);
+                                        _messages.remove(_messages[index]);
+                                      });
+                                    },
+                                  ),
+                                  onTap: () {
+                                    setState(() {
+                                      _messagecomp[_messages[index]] =
+                                          _messagecomp[_messages[index]]
+                                              ? false
+                                              : true;
+                                    });
+                                  },
+                                ),
+                              ));
+                        },
+                      ),
+              ),
+              const Divider(
+                height: 2,
+                color: Colors.white,
+              ),
+              _buildTextComposer(),
+            ],
+          ),
+        ));
+    return checknetConnection
+        ? update
+            ? updatebody
+            : mainBody
+        : noInternet;
   }
 
   Widget _buildTextComposer() {
@@ -419,14 +507,6 @@ class _ActivityScreenState extends State<ActivityScreen> {
             ),
           ),
           Container(
-              // decoration: BoxDecoration(
-              //     color: const Color(0xff7c94b6),
-              //     border: Border.all(
-              //       color: Colors.white,
-              //       width: 2,
-              //     ),
-              //     borderRadius: BorderRadius.all(Radius.circular(20))),
-              // margin: const EdgeInsets.symmetric(horizontal: 0),
               child: Theme.of(context).platform == TargetPlatform.iOS
                   ? CupertinoButton(
                       onPressed: _isComposing
@@ -447,5 +527,11 @@ class _ActivityScreenState extends State<ActivityScreen> {
       ),
     );
     // );
+  }
+
+  @override
+  void dispose() {
+    for (var message in _messages) {}
+    super.dispose();
   }
 }

@@ -5,8 +5,9 @@ import 'package:login/screens/register_screen.dart';
 import 'package:login/screens/activityScreen.dart';
 import 'package:login/utils/authentication.dart';
 import 'package:login/utils/validator.dart';
-
+import 'package:connectivity/connectivity.dart';
 import 'custom_form_field.dart';
+import 'package:login/screens/TestPage.dart';
 
 class SignInForm extends StatefulWidget {
   final FocusNode emailFocusNode;
@@ -119,10 +120,9 @@ class _SignInFormState extends State<SignInForm> {
                               if (user != null) {
                                 Navigator.of(context).pushReplacement(
                                   MaterialPageRoute(
-                                    builder: (context) => ActivityScreen(
-                                      user: user,
-                                    ),
-                                  ),
+                                      builder: (context) => ActivityScreen(
+                                            user: user,
+                                          )),
                                 );
                               }
                             }
