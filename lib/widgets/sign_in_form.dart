@@ -49,6 +49,7 @@ class _SignInFormState extends State<SignInForm> {
                   bottom: 24.0,
                 ),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     CustomFormField(
                       controller: _emailController,
@@ -62,17 +63,20 @@ class _SignInFormState extends State<SignInForm> {
                       hint: 'Email',
                     ),
                     SizedBox(height: 16.0),
-                    CustomFormField(
-                      controller: _passwordController,
-                      focusNode: widget.passwordFocusNode,
-                      keyboardType: TextInputType.text,
-                      inputAction: TextInputAction.done,
-                      validator: (value) => Validator.validatePassword(
-                        password: value,
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 45),
+                      child: CustomFormField(
+                        controller: _passwordController,
+                        focusNode: widget.passwordFocusNode,
+                        keyboardType: TextInputType.text,
+                        inputAction: TextInputAction.done,
+                        validator: (value) => Validator.validatePassword(
+                          password: value,
+                        ),
+                        isObscure: true,
+                        label: 'Password',
+                        hint: 'Password',
                       ),
-                      isObscure: true,
-                      label: 'Password',
-                      hint: 'Password',
                     ),
                   ],
                 ),
@@ -88,59 +92,56 @@ class _SignInFormState extends State<SignInForm> {
                     )
                   : Padding(
                       padding: EdgeInsets.only(left: 0.0, right: 0.0),
-                      child: Container(
-                        width: double.maxFinite,
-                        child: ElevatedButton(
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
-                              CustomColors.firebaseOrange,
-                            ),
-                            shape: MaterialStateProperty.all(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                            CustomColors.firebaseOrange,
+                          ),
+                          shape: MaterialStateProperty.all(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
                             ),
                           ),
-                          onPressed: () async {
-                            widget.emailFocusNode.unfocus();
-                            widget.passwordFocusNode.unfocus();
+                        ),
+                        onPressed: () async {
+                          widget.emailFocusNode.unfocus();
+                          widget.passwordFocusNode.unfocus();
 
-                            setState(() {
-                              _isSigningIn = true;
-                            });
+                          setState(() {
+                            _isSigningIn = true;
+                          });
 
-                            if (_signInFormKey.currentState!.validate()) {
-                              User? user =
-                                  await Authentication.signInUsingEmailPassword(
-                                context: context,
-                                email: _emailController.text,
-                                password: _passwordController.text,
+                          if (_signInFormKey.currentState!.validate()) {
+                            User? user =
+                                await Authentication.signInUsingEmailPassword(
+                              context: context,
+                              email: _emailController.text,
+                              password: _passwordController.text,
+                            );
+
+                            if (user != null) {
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (context) => ActivityScreen(
+                                          user: user,
+                                        )),
                               );
-
-                              if (user != null) {
-                                Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(
-                                      builder: (context) => ActivityScreen(
-                                            user: user,
-                                          )),
-                                );
-                              }
                             }
+                          }
 
-                            setState(() {
-                              _isSigningIn = false;
-                            });
-                          },
-                          child: Padding(
-                            padding: EdgeInsets.only(top: 16.0, bottom: 16.0),
-                            child: Text(
-                              'LOGIN',
-                              style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                                color: CustomColors.firebaseGrey,
-                                letterSpacing: 2,
-                              ),
+                          setState(() {
+                            _isSigningIn = false;
+                          });
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                          child: Text(
+                            'LOGIN',
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: CustomColors.firebaseGrey,
+                              letterSpacing: 2,
                             ),
                           ),
                         ),
