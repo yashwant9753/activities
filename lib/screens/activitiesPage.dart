@@ -2,10 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:login/res/custom_colors.dart';
 import 'package:login/database/database.dart';
 import 'package:intl/intl.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AllActivities extends StatefulWidget {
   const AllActivities({Key? key, required User user})
@@ -67,7 +65,7 @@ class _AllActivitiesState extends State<AllActivities> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "All Activities",
+          "Activities",
           style: TextStyle(color: Colors.white),
         ),
       ),
@@ -81,35 +79,38 @@ class _AllActivitiesState extends State<AllActivities> {
             : null,
         child: Column(
           children: [
-            DropdownButton(
-                icon: const Icon(Icons.arrow_drop_down_circle_outlined),
-                iconSize: 30,
-                elevation: 50,
-                isExpanded: true,
-                style: const TextStyle(color: Colors.black87),
-                value: dropdown,
-                items: documentIdlist.map((itemname) {
-                  return DropdownMenuItem(
-                      value: itemname,
-                      child: Text(
-                        itemname,
-                        style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w400,
-                            fontFamily: 'PT_Sans'),
-                      ));
-                }).toList(),
-                onChanged: (dynamic newValue) {
-                  setState(() {
-                    _messages = [];
-                    dropdown = newValue!;
-                    if (newValue == "Choice") {
-                    } else {
-                      fetchAcvtivity(newValue);
-                    }
-                  });
-                }),
+            Padding(
+              padding: EdgeInsets.only(top: 12),
+              child: DropdownButton(
+                  icon: const Icon(Icons.arrow_drop_down_circle_outlined),
+                  iconSize: 30,
+                  elevation: 50,
+                  isExpanded: true,
+                  style: const TextStyle(color: Colors.black87),
+                  value: dropdown,
+                  items: documentIdlist.map((itemname) {
+                    return DropdownMenuItem(
+                        value: itemname,
+                        child: Text(
+                          itemname,
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w400,
+                              fontFamily: 'PT_Sans'),
+                        ));
+                  }).toList(),
+                  onChanged: (dynamic newValue) {
+                    setState(() {
+                      _messages = [];
+                      dropdown = newValue!;
+                      if (newValue == "Choice") {
+                      } else {
+                        fetchAcvtivity(newValue);
+                      }
+                    });
+                  }),
+            ),
             Flexible(
               child: _messages.isEmpty
                   ? Center(
@@ -130,7 +131,7 @@ class _AllActivitiesState extends State<AllActivities> {
                         return Card(
                             color: _messagecomp[_messages[index]]
                                 ? Colors.green
-                                : null,
+                                : Colors.grey[850],
                             child: Padding(
                               padding: EdgeInsets.symmetric(horizontal: 15),
                               child: ListTile(

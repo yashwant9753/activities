@@ -2,8 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:login/res/custom_colors.dart';
-import 'package:login/screens/sign_in_screen.dart';
-import 'package:login/utils/authentication.dart';
 import 'package:login/database/database.dart';
 import 'package:login/screens/activitiesPage.dart';
 import 'package:login/screens/TestPage.dart';
@@ -11,7 +9,6 @@ import 'package:login/screens/rating.dart';
 import 'package:login/screens/user_info_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:connectivity/connectivity.dart';
 
@@ -28,7 +25,8 @@ class ActivityScreen extends StatefulWidget {
   _ActivityScreenState createState() => _ActivityScreenState();
 }
 
-class _ActivityScreenState extends State<ActivityScreen> {
+class _ActivityScreenState extends State<ActivityScreen>
+    with TickerProviderStateMixin {
   late bool _isEmailVerified;
   late User _user;
   Map _messagecomp = {};
@@ -82,6 +80,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
     });
 
     _focusNode.requestFocus();
+
     // _message.animationController.forward();
   }
 
@@ -338,36 +337,26 @@ class _ActivityScreenState extends State<ActivityScreen> {
         ),
         appBar: AppBar(
           backgroundColor: Theme.of(context).primaryColor,
-          title: Container(
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(right: 50),
-                    child: RichText(
-                        text: TextSpan(
-                            text: 'Activity',
-                            style: TextStyle(
+          title: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+            Center(
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(right: 50),
+                      child: RichText(
+                          text: TextSpan(
+                              text: "- ${newDt}",
+                              style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w600,
-                                letterSpacing: 5,
-                                fontFamily: 'PT_Sans'))),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(right: 50),
-                    child: RichText(
-                        text: TextSpan(
-                            text: "- ${newDt}",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 10,
-                              fontWeight: FontWeight.w700,
-                              fontFamily: 'PT_Sans',
-                            ))),
-                  ),
-                ]),
-          ),
+                                fontSize: 18,
+                                fontWeight: FontWeight.w700,
+                                fontFamily: 'PT_Sans',
+                              ))),
+                    ),
+                  ]),
+            ),
+          ]),
           elevation:
               Theme.of(context).platform == TargetPlatform.iOS ? 0.0 : 4.0,
           actions: <Widget>[
@@ -420,51 +409,46 @@ class _ActivityScreenState extends State<ActivityScreen> {
               Flexible(
                 child: _messages.isEmpty
                     ? Center(
-                        child: RichText(
-                            text: TextSpan(
-                                text: '''Today's Activities''',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w100,
-                                    letterSpacing: 10,
-                                    fontFamily: 'PT_Sans'))),
-                      )
+                        child: CircleAvatar(
+                        radius: 100,
+                        child: Image.asset("assets/logo.png"),
+                      ))
                     : ListView.builder(
                         padding: const EdgeInsets.all(8.0),
                         reverse: true,
                         itemCount: _messages.length,
                         itemBuilder: (BuildContext context, int index) {
                           return Card(
-                              color: _messagecomp[_messages[index]]
-                                  ? Colors.green
-                                  : null,
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 15),
-                                child: ListTile(
-                                  title: Text('${_messages[index]}'),
-                                  trailing: IconButton(
-                                    icon: const Icon(
-                                      Icons.delete,
-                                    ),
-                                    tooltip: 'Delete',
-                                    onPressed: () {
-                                      setState(() {
-                                        _messagecomp.remove(_messages[index]);
-                                        _messages.remove(_messages[index]);
-                                      });
-                                    },
+                            color: _messagecomp[_messages[index]]
+                                ? Colors.green
+                                : Colors.grey[850],
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 15),
+                              child: ListTile(
+                                title: Text('${_messages[index]}'),
+                                trailing: IconButton(
+                                  icon: const Icon(
+                                    Icons.delete,
                                   ),
-                                  onTap: () {
+                                  tooltip: 'Delete',
+                                  onPressed: () {
                                     setState(() {
-                                      _messagecomp[_messages[index]] =
-                                          _messagecomp[_messages[index]]
-                                              ? false
-                                              : true;
+                                      _messagecomp.remove(_messages[index]);
+                                      _messages.remove(_messages[index]);
                                     });
                                   },
                                 ),
-                              ));
+                                onTap: () {
+                                  setState(() {
+                                    _messagecomp[_messages[index]] =
+                                        _messagecomp[_messages[index]]
+                                            ? false
+                                            : true;
+                                  });
+                                },
+                              ),
+                            ),
+                          );
                         },
                       ),
               ),

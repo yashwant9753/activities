@@ -40,13 +40,25 @@ dependencies:
   firebase_auth: ^1.0.1
   google_sign_in: ^5.0.0
   connectivity:
+  flutter_launcher_icons:
   firebase_database:
   cloud_firestore: 
   url_launcher: ^6.0.9
 
 dev_dependencies:
+  
+  flutter_launcher_icons: "^0.8.0"
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/logo.png"
+    
+
+ 
   flutter_test:
     sdk: flutter
+  
 
   # The "flutter_lints" package below contains a  set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
