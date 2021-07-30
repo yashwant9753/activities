@@ -62,7 +62,7 @@ class _RegisterFormState extends State<RegisterForm> {
         child: Form(
           key: _registerFormKey,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Padding(
                 padding: const EdgeInsets.only(

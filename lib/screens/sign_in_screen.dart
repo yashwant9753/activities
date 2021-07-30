@@ -46,12 +46,10 @@ class _SignInScreenState extends State<SignInScreen> {
             padding: const EdgeInsets.only(
               left: 16.0,
               right: 16.0,
-              bottom: 100.0,
+              bottom: 60.0,
             ),
             child: Column(
-              mainAxisSize: MainAxisSize.max,
               children: [
-                Row(),
                 Expanded(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -61,7 +59,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         'WELCOME',
                         style: TextStyle(
                             color: CustomColors.custumText,
-                            fontSize: 40,
+                            fontSize: 35,
                             fontWeight: FontWeight.normal),
                       ),
                       Text(

@@ -18,6 +18,7 @@ class RateApp extends StatefulWidget {
 
 class _RateAppState extends State<RateApp> {
   final TextEditingController _suggestion = TextEditingController();
+
   bool star1 = false;
   bool star2 = false;
   bool star3 = false;
@@ -87,7 +88,7 @@ class _RateAppState extends State<RateApp> {
                                     padding: EdgeInsets.all(10.0),
                                     child: TextField(
                                       controller: _suggestion,
-                                      maxLines: 10,
+                                      maxLines: 5,
                                       decoration: InputDecoration.collapsed(
                                           hintText: "Any suggestion",
                                           hintStyle: TextStyle(
@@ -124,9 +125,6 @@ class _RateAppState extends State<RateApp> {
                                             });
                                           },
                                         ),
-                                        SizedBox(
-                                          width: 15,
-                                        ),
                                         IconButton(
                                           icon: Icon(star2
                                               ? Icons.star
@@ -141,9 +139,6 @@ class _RateAppState extends State<RateApp> {
                                               star5 = false;
                                             });
                                           },
-                                        ),
-                                        SizedBox(
-                                          width: 15,
                                         ),
                                         IconButton(
                                           icon: Icon(star3
@@ -160,9 +155,6 @@ class _RateAppState extends State<RateApp> {
                                             });
                                           },
                                         ),
-                                        SizedBox(
-                                          width: 15,
-                                        ),
                                         IconButton(
                                           icon: Icon(star4
                                               ? Icons.star
@@ -177,9 +169,6 @@ class _RateAppState extends State<RateApp> {
                                               star5 = false;
                                             });
                                           },
-                                        ),
-                                        SizedBox(
-                                          width: 15,
                                         ),
                                         IconButton(
                                           icon: Icon(star5
@@ -240,110 +229,3 @@ class _RateAppState extends State<RateApp> {
         ));
   }
 }
-
-// Scaffold(
-//       appBar: AppBar(
-//         title: Text(
-//           "Update Available",
-//           style: TextStyle(color: Colors.white),
-//         ),
-//       ),
-//       body: Container(
-//           decoration: BoxDecoration(
-//               borderRadius: BorderRadius.circular(10),
-//               color: Theme.of(context).backgroundColor),
-//           child: Center(
-//             child: Padding(
-//               padding: EdgeInsets.only(top: 50),
-//               child: Form(
-//                 child: Column(
-//                   children: [
-//                     Text(
-//                       "Review",
-//                       style: TextStyle(
-//                         fontSize: 20,
-//                       ),
-//                     ),
-//                     Padding(
-//                       padding:
-//                           const EdgeInsets.only(top: 10, left: 10, right: 10),
-//                       child: Card(
-//                         shape: RoundedRectangleBorder(
-//                             side: BorderSide(color: Colors.black, width: 0.4),
-//                             borderRadius: BorderRadius.circular(10)),
-//                         // color: Theme.of(context).backgroundColor,
-//                         child: Padding(
-//                           padding: EdgeInsets.all(8.0),
-//                           child: TextField(
-//                             maxLines: 10,
-//                             decoration: InputDecoration.collapsed(
-//                                 hintText: "Any suggestion",
-//                                 hintStyle: TextStyle(
-//                                   fontSize: 20,
-//                                   fontFamily: 'PT_Sans',
-//                                 )),
-//                           ),
-//                         ),
-//                       ),
-//                     ),
-//                     Card(
-//                       shape: RoundedRectangleBorder(
-//                           side: BorderSide(color: Colors.black, width: 0.4),
-//                           borderRadius: BorderRadius.circular(10)),
-//                       // color: Theme.of(context).backgroundColor,
-//                       child: Padding(
-//                         padding: EdgeInsets.all(15),
-//                         child: Row(
-//                           children: [
-//                             Icon(Icons.star_border),
-//                             SizedBox(
-//                               width: 20,
-//                             ),
-//                             Icon(Icons.star_border),
-//                             SizedBox(
-//                               width: 20,
-//                             ),
-//                             Icon(Icons.star_border),
-//                             SizedBox(
-//                               width: 20,
-//                             ),
-//                             Icon(Icons.star_border),
-//                             SizedBox(
-//                               width: 20,
-//                             ),
-//                             Icon(Icons.star_border),
-//                           ],
-//                         ),
-//                       ),
-//                     ),
-//                     ElevatedButton(
-//                       style: ButtonStyle(
-//                         backgroundColor: MaterialStateProperty.all(
-//                           CustomColors.firebaseOrange,
-//                         ),
-//                         shape: MaterialStateProperty.all(
-//                           RoundedRectangleBorder(
-//                             borderRadius: BorderRadius.circular(10),
-//                           ),
-//                         ),
-//                       ),
-//                       onPressed: () {},
-//                       child: Padding(
-//                         padding: EdgeInsets.only(top: 16.0, bottom: 16.0),
-//                         child: Text(
-//                           'Submitt',
-//                           style: TextStyle(
-//                             fontSize: 15,
-//                             fontWeight: FontWeight.bold,
-//                             color: CustomColors.firebaseGrey,
-//                             letterSpacing: 2,
-//                           ),
-//                         ),
-//                       ),
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//             ),
-//           )),
-//     );
