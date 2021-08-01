@@ -454,13 +454,11 @@ class _ActivityScreenState extends State<ActivityScreen>
               ),
               tooltip: 'Save Activity',
               onPressed: () {
-                print(_messagecomp.runtimeType);
-                // showDialog(
-                //     context: context,
-                //     builder: (_) {
-                //       return AlertMessage(
-                //           user: _user, messagecomp: _messagecomp);
-                //     });
+                showDialog(
+                    context: context,
+                    builder: (_) {
+                      return AlertMessage(user: _user, message: _messagecomp);
+                    });
                 // _displayDialog(context);
 
                 // addItem(widget._user.email, newDt, _messagecomp);

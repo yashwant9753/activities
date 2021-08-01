@@ -7,11 +7,13 @@ import 'package:login/screens/activitiesPage.dart';
 import 'package:intl/intl.dart';
 
 class AlertMessage extends StatefulWidget {
-  const AlertMessage({Key? key, required User user, required var messagecomp})
+  const AlertMessage({Key? key, required User user, required Map message})
       : _user = user,
+        _message = message,
         super(key: key);
 
   final User _user;
+  final Map _message;
 
   @override
   _AlertMessageState createState() => _AlertMessageState();
@@ -19,13 +21,16 @@ class AlertMessage extends StatefulWidget {
 
 class _AlertMessageState extends State<AlertMessage> {
   late User _user;
+  Map? _message;
 
   List documentIdlist = [];
+
   final TextEditingController _alertTextField = TextEditingController();
   String dropdown = DateFormat.yMMMEd().format(DateTime.now());
   @override
   void initState() {
     super.initState();
+    print(_message);
 
     fetchDatabaseList();
   }
@@ -45,7 +50,7 @@ class _AlertMessageState extends State<AlertMessage> {
 
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Save As'),
+      title: Text("SAVE AS"),
       content: Container(
         height: MediaQuery.of(context).size.height / 8,
         child: Column(
