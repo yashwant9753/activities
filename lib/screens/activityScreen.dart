@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:login/res/custom_colors.dart';
 import 'package:login/database/database.dart';
@@ -12,8 +11,6 @@ import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:connectivity/connectivity.dart';
-
-String _name = 'Description';
 
 class ActivityScreen extends StatefulWidget {
   const ActivityScreen({Key? key, required User user})
@@ -457,25 +454,11 @@ class _ActivityScreenState extends State<ActivityScreen>
                 showDialog(
                     context: context,
                     builder: (_) {
-                      return AlertMessage(user: _user, message: _messagecomp);
+                      return AlertMessage(
+                        user: _user,
+                        message: _messagecomp,
+                      );
                     });
-                // _displayDialog(context);
-
-                // addItem(widget._user.email, newDt, _messagecomp);
-
-                // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                //     content: Row(
-                //   children: [
-                //     Icon(
-                //       Icons.thumb_up,
-                //       color: CustomColors.firebaseOrange,
-                //     ),
-                //     SizedBox(
-                //       width: 10,
-                //     ),
-                //     Text("Successfully Saved")
-                //   ],
-                // )));
               },
             ),
           ],

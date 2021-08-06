@@ -1,37 +1,38 @@
 import 'package:firebase_auth/firebase_auth.dart';
-
-import 'package:flutter/material.dart';
 import 'package:login/res/custom_colors.dart';
+import 'package:flutter/material.dart';
 import 'package:login/database/database.dart';
-import 'package:login/screens/activitiesPage.dart';
 import 'package:intl/intl.dart';
 
+nana(User user, Map message) {
+  print(message);
+}
+
 class AlertMessage extends StatefulWidget {
-  const AlertMessage({Key? key, required User user, required Map message})
+  AlertMessage({required User user, required Map message})
       : _user = user,
-        _message = message,
-        super(key: key);
+        _messagecomp = message;
 
   final User _user;
-  final Map _message;
-
+  final Map _messagecomp;
   @override
-  _AlertMessageState createState() => _AlertMessageState();
+  _AlertMessageState createState() =>
+      _AlertMessageState(newmessage: _messagecomp);
 }
 
 class _AlertMessageState extends State<AlertMessage> {
+  _AlertMessageState({required Map newmessage}) : _messagecomp = newmessage;
+  late Map _messagecomp;
   late User _user;
-  Map? _message;
 
   List documentIdlist = [];
 
   final TextEditingController _alertTextField = TextEditingController();
   String dropdown = DateFormat.yMMMEd().format(DateTime.now());
+  // var std = new ActivityScreen();
   @override
   void initState() {
     super.initState();
-    print(_message);
-
     fetchDatabaseList();
   }
 
@@ -43,11 +44,15 @@ class _AlertMessageState extends State<AlertMessage> {
     } else {
       setState(() {
         documentIdlist = resultant;
-        documentIdlist.add(DateFormat.yMMMEd().format(DateTime.now()));
+        if (documentIdlist.contains(dropdown)) {
+        } else {
+          documentIdlist.add(DateFormat.yMMMEd().format(DateTime.now()));
+        }
       });
     }
   }
 
+  @override
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text("SAVE AS"),
@@ -95,7 +100,42 @@ class _AlertMessageState extends State<AlertMessage> {
         ),
         FlatButton(
           child: new Text('SAVE'),
-          onPressed: () {},
+          onPressed: () {
+            if (_alertTextField.text.isEmpty) {
+              addItem(widget._user.email, dropdown, _messagecomp);
+              Navigator.of(context).pop();
+
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Row(
+                children: [
+                  Icon(
+                    Icons.thumb_up,
+                    color: CustomColors.firebaseOrange,
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text("Successfully Saved As $dropdown")
+                ],
+              )));
+            } else {
+              addItem(widget._user.email, _alertTextField.text, _messagecomp);
+              Navigator.of(context).pop();
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Row(
+                children: [
+                  Icon(
+                    Icons.thumb_up,
+                    color: CustomColors.firebaseOrange,
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text("Successfully Saved ${_alertTextField.text}")
+                ],
+              )));
+            }
+          },
         )
       ],
     );
