@@ -43,12 +43,10 @@ class _SignInScreenState extends State<SignInScreen> {
         backgroundColor: CustomColors.buttonColor,
         body: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.only(
-              left: 16.0,
-              right: 16.0,
-              bottom: 60.0,
-            ),
+            padding:
+                const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 150),
             child: Column(
+              mainAxisSize: MainAxisSize.max,
               children: [
                 Expanded(
                   child: Column(
@@ -66,7 +64,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         'Track Down Your Activities',
                         style: TextStyle(
                           color: CustomColors.custumText,
-                          fontSize: 20,
+                          fontSize: 15,
                         ),
                       ),
                     ],
@@ -102,6 +100,7 @@ class _SignInScreenState extends State<SignInScreen> {
           ),
         ),
       ),
+      // ),
     );
   }
 }

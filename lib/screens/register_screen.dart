@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:login/res/custom_colors.dart';
-import 'package:login/widgets/app_bar_title.dart';
+
 import 'package:login/widgets/register_form.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -23,17 +23,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
       },
       child: Scaffold(
         backgroundColor: CustomColors.buttonColor,
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: CustomColors.buttonColor,
-          title: Text("Sign Up"),
-        ),
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.only(
+              top: 50,
               left: 16.0,
               right: 16.0,
-              bottom: 30.0,
             ),
             child: RegisterForm(
               nameFocusNode: _nameFocusNode,

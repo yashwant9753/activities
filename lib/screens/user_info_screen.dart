@@ -55,7 +55,9 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: AppBarTitle(),
+        title: Text(
+          'Account',
+        ),
       ),
       body: SafeArea(
         child: Padding(

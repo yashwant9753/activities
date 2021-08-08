@@ -80,7 +80,8 @@ class _AllActivitiesState extends State<AllActivities> {
         child: Column(
           children: [
             Padding(
-              padding: EdgeInsets.only(top: 12),
+              // padding: EdgeInsets.only(top: 12),
+              padding: EdgeInsets.all(12),
               child: DropdownButton(
                   icon: const Icon(Icons.arrow_drop_down_circle_outlined),
                   iconSize: 30,
