@@ -52,6 +52,15 @@ class _RegisterFormState extends State<RegisterForm> {
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    _nameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.all(15),
@@ -121,7 +130,7 @@ class _RegisterFormState extends State<RegisterForm> {
                     padding: const EdgeInsets.all(16.0),
                     child: CircularProgressIndicator(
                       valueColor: AlwaysStoppedAnimation<Color>(
-                        CustomColors.firebaseOrange,
+                        Colors.white,
                       ),
                     ),
                   )

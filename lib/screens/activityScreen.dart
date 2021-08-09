@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:login/res/custom_colors.dart';
 import 'package:login/database/database.dart';
 import 'package:login/screens/activitiesPage.dart';
-import 'package:login/screens/TestPage.dart';
+
 import 'package:login/widgets/alert_dialog.dart';
 import 'package:login/screens/rating.dart';
 import 'package:login/screens/user_info_screen.dart';
@@ -48,9 +48,10 @@ class _ActivityScreenState extends State<ActivityScreen>
   @override
   void initState() {
     super.initState();
+    checkUpdate();
     checkConnectivity();
     fetchAcvtivity();
-    checkUpdate();
+
     fetchDatabaseList();
     print(newDt.runtimeType);
     _user = widget._user;
@@ -212,19 +213,13 @@ class _ActivityScreenState extends State<ActivityScreen>
               child: Column(
                 children: [
                   Text(
-                    "The New Version of this App is Available",
+                    "The Update of this App is Available",
                     style: TextStyle(
                       fontSize: 20,
                     ),
                   ),
                   Text(
-                    "Uninstall old version and Download new Verson",
-                    style: TextStyle(
-                      fontSize: 15,
-                    ),
-                  ),
-                  Text(
-                    "Your Data will be Saved after Uninstall",
+                    "Please Install New Version for Better Experince",
                     style: TextStyle(
                       fontSize: 15,
                     ),
@@ -249,7 +244,7 @@ class _ActivityScreenState extends State<ActivityScreen>
                     child: Padding(
                       padding: EdgeInsets.only(top: 16.0, bottom: 16.0),
                       child: Text(
-                        'Download',
+                        'Update',
                         style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.bold,
@@ -413,17 +408,6 @@ class _ActivityScreenState extends State<ActivityScreen>
                   );
                 },
               ),
-              ListTile(
-                leading: Icon(Icons.rate_review),
-                title: Text('Test Page'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => TesPage(user: _user)),
-                  );
-                },
-              ),
             ],
           ),
         ),
@@ -582,7 +566,13 @@ class _ActivityScreenState extends State<ActivityScreen>
 
   @override
   void dispose() {
-    for (var message in _messages) {}
+    for (var message in _messages) {
+      message.dispose();
+    }
+    fetchAcvtivity().dispose();
+    checkConnectivity().dispose();
+    fetchDatabaseList().dispose();
+
     super.dispose();
   }
 }

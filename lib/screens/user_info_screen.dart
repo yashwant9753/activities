@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:login/res/custom_colors.dart';
 import 'package:login/screens/sign_in_screen.dart';
 import 'package:login/utils/authentication.dart';
-import 'package:login/widgets/app_bar_title.dart';
 
 class UserInfoScreen extends StatefulWidget {
   const UserInfoScreen({Key? key, required User user})
@@ -183,6 +182,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                               child: Text(
                                 'Verify',
                                 style: TextStyle(
+                                  color: Colors.black,
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
                                   letterSpacing: 2,
